@@ -1,7 +1,6 @@
 # Fullstack Java Project
 
-## Firstname Lastname (Class)
-Change the name and Class in the title above
+## Kerim Böyükak (3AON B)
 
 ## Folder structure
 
