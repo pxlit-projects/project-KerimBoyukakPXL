@@ -1,6 +1,6 @@
 # Architecture
 
-![c4_java](https://github.com/user-attachments/assets/221fb85a-a3a9-4735-88a6-56931a571fd9)
+![c4_java](https://github.com/user-attachments/assets/91b93cc4-7f24-4ab6-aa84-f8c753a4ca2f)
 
 ## User & Editor
 Rol: De eindgebruiker die via de Angular Web Application interacteert met het systeem.
