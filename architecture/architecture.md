@@ -44,10 +44,10 @@
 
 # Communicatie
 
-### Synchroon via OpenFeign
+## Synchroon via OpenFeign
   OpenFeign wordt gebruikt voor directe, synchrone communicatie tussen de microservices door middel van een NotificationService.  
 
-  _PostService - NotificationService_
+  _PostService - NotificationService_  
   De auteur van een post moet direct worden geïnformeerd wanneer de post succesvol is aangemaakt of gepubliceerd.  
   PostService roept een endpoint van de NotificationService aan via OpenFeign, bijvoorbeeld: /notifications/send.  
   De NotificationService verstuurt de notificatie.  
@@ -60,7 +60,7 @@
   Wanneer een gebruiker een reactie plaatst, moet de auteur van de post of andere betrokkenen direct een melding ontvangen. 
   CommentService gebruikt OpenFeign om een notificatieverzoek naar de NotificationService te sturen. 
 
-### Asynchroon via MessageBus
+## Asynchroon via MessageBus
   De Message Bus wordt gebruikt voor asynchrone communicatie wanneer een event niet onmiddellijk verwerkt hoeft te worden, of wanneer meerdere services geïnteresseerd kunnen zijn in dezelfde event. 
   
   _PostService - NotificationService:_  
