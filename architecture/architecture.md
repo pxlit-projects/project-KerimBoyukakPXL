@@ -75,5 +75,5 @@
   
   _CommentService - NotificationService:_  
   Wanneer een reactie wordt geplaatst, wordt een event gepubliceerd naar RabbitMQ.  
-  Producent: De CommentService stuurt een bericht naar de queue comment-event-queue met informatie zoals reactie-ID, post-ID, en auteur van de reactie.  
+  Producent: De CommentService stuurt een bericht naar de queue comment-event-queue met informatie van de reactie.  
   Consument: De NotificationService ontvangt dit bericht en verstuurt notificaties naar de betrokkenen.  
