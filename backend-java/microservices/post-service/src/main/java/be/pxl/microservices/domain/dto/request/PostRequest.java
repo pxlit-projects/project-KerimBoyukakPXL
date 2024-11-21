@@ -18,7 +18,6 @@ public class PostRequest {
     private String title;
     private String content;
     private String author;
-    private State state;
 
     public Post toPost() {
         return Post.builder()
@@ -26,7 +25,6 @@ public class PostRequest {
                 .content(this.content)
                 .author(this.author)
                 .dateCreated(LocalDateTime.now())
-                .state(this.state)
                 .build();
     }
 }

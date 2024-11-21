@@ -33,20 +33,31 @@ public class PostService implements IPostService {
     }
 
     @Override
-    public void addPost(PostRequest postRequest) {  // We can set the state to either CONCEPT or CREATED
+    public void createPost(PostRequest postRequest) {
+        Post post = postRequest.toPost();
+        post.setState(State.CREATED);
         postRepository.save(postRequest.toPost());
+    }
+    @Override
+    public void saveConcept(PostRequest postRequest) {
+        Post post = postRequest.toPost();
+        post.setState(State.CONCEPT);
+        postRepository.save(post);
     }
 
     @Override
-    public void updatePostContent(Long id, String content) {
+    public void updatePostContent(Long id, String content) {    // These are the posts waiting to be published (state CREATED)
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Post with id " + id + " not found"));
+        if (post.getState() != State.CREATED) {
+            throw new IllegalArgumentException("Only posts with state CREATED can be updated");
+        }
         post.setContent(content);
         postRepository.save(post);
     }
 
     @Override
-    public void finishConcept(Long id, PostRequest postRequest) {
+    public void finishConcept(Long id, PostRequest postRequest) {   // These are drafts (state CONCEPT)
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Post with id " + id + " not found"));
         if (post.getState() != State.CONCEPT) {
@@ -56,7 +67,7 @@ public class PostService implements IPostService {
         post.setContent(postRequest.getContent());
         post.setAuthor(postRequest.getAuthor());
         post.setDateCreated(LocalDateTime.now());   // Update the dateCreated to the current date
-        post.setState(State.CREATED);   // Whenever we continue working on a concept, we change the state to CREATED when we are done
+        post.setState(State.CREATED);               // Whenever we continue working on a concept, we change the state to CREATED when we are done
         postRepository.save(post);
     }
 }

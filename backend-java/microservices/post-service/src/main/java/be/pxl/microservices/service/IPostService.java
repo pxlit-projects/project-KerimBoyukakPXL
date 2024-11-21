@@ -9,7 +9,8 @@ public interface IPostService {
     List<PostResponse> getAllCreatedPosts();
     List<PostResponse> getAllConceptPosts();
     PostResponse getPostById(Long id);
-    void addPost(PostRequest postRequest);
+    void createPost(PostRequest postRequest);
+    void saveConcept(PostRequest postRequest);
     void updatePostContent(Long id, String content);
     void finishConcept(Long id, PostRequest postRequest);
 }

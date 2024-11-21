@@ -15,8 +15,13 @@ public class PostController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void addPost(@RequestBody PostRequest postRequest) {
-        postService.addPost(postRequest);
+    public void createPost(@RequestBody PostRequest postRequest) {
+        postService.createPost(postRequest);
+    }
+    @PostMapping("/concept")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void saveConcept(@RequestBody PostRequest postRequest) {
+        postService.saveConcept(postRequest);
     }
 
     @GetMapping
@@ -48,6 +53,15 @@ public class PostController {
         try{
             postService.updatePostContent(id, content);
             return ResponseEntity.ok("Post with id " + id + " updated successfully");
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + ex.getMessage());
+        }
+    }
+    @PutMapping("/{id}/finish")
+    public ResponseEntity<?> finishConcept(@PathVariable Long id, @RequestBody PostRequest postRequest) {
+        try{
+            postService.finishConcept(id, postRequest);
+            return ResponseEntity.ok("Post with id " + id + " finished successfully");
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + ex.getMessage());
         }
