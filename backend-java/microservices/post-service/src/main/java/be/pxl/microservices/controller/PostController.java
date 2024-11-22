@@ -57,7 +57,7 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + ex.getMessage());
         }
     }
-    @PutMapping("/{id}/finish")
+    @PutMapping("/concept/{id}")
     public ResponseEntity<?> finishConcept(@PathVariable Long id, @RequestBody PostRequest postRequest) {
         try{
             postService.finishConcept(id, postRequest);

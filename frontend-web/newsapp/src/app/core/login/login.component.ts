@@ -1,13 +1,14 @@
 import {Component, inject} from '@angular/core';
 import {AuthService} from "../../shared/services/auth.service";
 import {Router} from "@angular/router";
-import {FormsModule} from "@angular/forms";
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -16,15 +17,23 @@ export class LoginComponent {
   router: Router = inject(Router);
   authService: AuthService = inject(AuthService);
 
-  username: string = '';
-  role: 'editor' | 'user' = 'user';
+  fb: FormBuilder = inject(FormBuilder);
+
+  loginForm: FormGroup = this.fb.group({
+    username: ['', Validators.required],
+    role: ['user']
+  });
 
   onSubmit() {
-    if (!this.username) {
-      alert('Please enter a username');
-    }else{
-      this.authService.setUser(this.username, this.role);
-      this.router.navigate(['/dashboard']);
+    if (this.loginForm.valid) {
+      const {username, role} = this.loginForm.value;
+      this.authService.setUser(username, role);
+      if (this.authService.getRole() === 'editor') {
+        this.router.navigate(['/dashboard']);
+      } else if
+      (this.authService.getRole() === 'user') {
+        this.router.navigate(['/user-dashboard']);
+      }
     }
   }
 }
