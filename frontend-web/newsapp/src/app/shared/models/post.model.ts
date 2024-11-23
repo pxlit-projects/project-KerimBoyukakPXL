@@ -3,14 +3,14 @@ export class Post {
   title: string;
   content: string;
   author: string;
-  creationDate: string;
+  dateCreated: Date;
   state: string;
 
-  constructor(title: string, content: string, author: string, creationDate: string, state: string) {
+  constructor(title: string, content: string, author: string, dateCreated: Date, state: string) {
     this.title = title;
     this.content = content;
     this.author = author;
-    this.creationDate = creationDate;
+    this.dateCreated = dateCreated;
     this.state = state;
   }
 }

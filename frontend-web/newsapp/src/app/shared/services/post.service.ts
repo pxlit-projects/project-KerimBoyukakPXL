@@ -8,8 +8,8 @@ import {Post} from "../models/post.model";
   providedIn: 'root'
 })
 export class PostService {
-  api: string = environment.apiUrl+'/api/posts';
-  http: HttpClient = inject(HttpClient);
+  api:string = environment.apiUrl+'post/api/posts';
+  http:HttpClient = inject(HttpClient);
 
   getCreatedPosts() : Observable<Post[]> {
     return this.http.get<Post[]>(this.api);
@@ -20,10 +20,10 @@ export class PostService {
   getPost(id:number) : Observable<Post> {
     return this.http.get<Post>(this.api+'/'+id);
   }
-  createPost(post: Post) : Observable<Post>{
+  createPost(post: any) : Observable<Post>{
     return this.http.post<Post>(this.api, post);
   }
-  saveConcept(post: Post):Observable<Post> {
+  saveConcept(post: any):Observable<Post> {
     return this.http.post<Post>(this.api+'/concept', post);
   }
   updateContent(id:number, content:string):Observable<Post>{

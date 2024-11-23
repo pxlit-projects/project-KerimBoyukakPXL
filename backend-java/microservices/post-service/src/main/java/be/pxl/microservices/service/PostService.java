@@ -36,7 +36,7 @@ public class PostService implements IPostService {
     public void createPost(PostRequest postRequest) {
         Post post = postRequest.toPost();
         post.setState(State.CREATED);
-        postRepository.save(postRequest.toPost());
+        postRepository.save(post);
     }
     @Override
     public void saveConcept(PostRequest postRequest) {

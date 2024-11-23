@@ -3,7 +3,7 @@ import {Injectable} from "@angular/core";
 import {AuthService} from "./shared/services/auth.service";
 
 @Injectable({
-  providedIn: 'root'  // Make this guard globally available
+  providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
 
@@ -13,6 +13,7 @@ export class AuthGuard implements CanActivate {
     if (this.authService.isLoggedIn()) {
       return true;
     } else {
+      this.authService.logout();
       this.router.navigate(['/login']);
       return false;
     }
