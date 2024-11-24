@@ -2,12 +2,14 @@ import {Component, inject, OnInit} from '@angular/core';
 import {PostService} from "../../../shared/services/post.service";
 import {Post} from "../../../shared/models/post.model";
 import {PostItemComponent} from "../post-item/post-item.component";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-concept-post-list',
   standalone: true,
   imports: [
-    PostItemComponent
+    PostItemComponent,
+    RouterLink
   ],
   templateUrl: './concept-post-list.component.html',
   styleUrl: './concept-post-list.component.css'

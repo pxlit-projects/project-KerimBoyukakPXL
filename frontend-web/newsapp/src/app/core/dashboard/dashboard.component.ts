@@ -3,7 +3,6 @@ import {Router, RouterLink} from "@angular/router";
 import {AuthService} from "../../shared/services/auth.service";
 import {CreatedPostListComponent} from "../posts/created-post-list/created-post-list.component";
 import {ConceptPostListComponent} from "../posts/concept-post-list/concept-post-list.component";
-import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +11,6 @@ import {NgIf} from "@angular/common";
     RouterLink,
     CreatedPostListComponent,
     ConceptPostListComponent,
-    NgIf
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'

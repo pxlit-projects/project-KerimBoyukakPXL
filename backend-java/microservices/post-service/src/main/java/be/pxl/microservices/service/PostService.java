@@ -26,6 +26,12 @@ public class PostService implements IPostService {
                 .map(PostResponse::new)
                 .toList();
     }
+    public List<PostResponse> getAllPublishedPosts() {
+        return postRepository.findByState(State.PUBLISHED).stream()
+                .map(PostResponse::new)
+                .toList();
+    }
+
     public PostResponse getPostById(Long id) {
         return postRepository.findById(id)
                 .map(PostResponse::new)
@@ -46,13 +52,14 @@ public class PostService implements IPostService {
     }
 
     @Override
-    public void updatePostContent(Long id, String content) {    // These are the posts waiting to be published (state CREATED)
+    public void updatePost(Long id, PostRequest postRequest) {    // These are the posts waiting to be published (state CREATED)
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Post with id " + id + " not found"));
         if (post.getState() != State.CREATED) {
             throw new IllegalArgumentException("Only posts with state CREATED can be updated");
         }
-        post.setContent(content);
+        post.setContent(postRequest.getContent());
+        post.setTitle(postRequest.getTitle());
         postRepository.save(post);
     }
 
@@ -65,7 +72,6 @@ public class PostService implements IPostService {
         }
         post.setTitle(postRequest.getTitle());
         post.setContent(postRequest.getContent());
-        post.setAuthor(postRequest.getAuthor());
         post.setDateCreated(LocalDateTime.now());   // Update the dateCreated to the current date
         post.setState(State.CREATED);               // Whenever we continue working on a concept, we change the state to CREATED when we are done
         postRepository.save(post);

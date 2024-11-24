@@ -40,6 +40,14 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + ex.getMessage());
         }
     }
+    @GetMapping("/published")
+    public ResponseEntity<?> getPublishedPosts() {
+        try{
+            return ResponseEntity.ok(postService.getAllPublishedPosts());
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + ex.getMessage());
+        }
+    }
     @GetMapping("/{id}")
     public ResponseEntity<?> getPostById(@PathVariable Long id) {
         try{
@@ -49,21 +57,13 @@ public class PostController {
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> updatePostContent(@PathVariable Long id, @RequestBody String content) {
-        try{
-            postService.updatePostContent(id, content);
-            return ResponseEntity.ok("Post with id " + id + " updated successfully");
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + ex.getMessage());
-        }
+    @ResponseStatus(HttpStatus.OK)
+    public void updatePost(@PathVariable Long id, @RequestBody PostRequest postRequest) {
+        postService.updatePost(id, postRequest);
     }
     @PutMapping("/concept/{id}")
-    public ResponseEntity<?> finishConcept(@PathVariable Long id, @RequestBody PostRequest postRequest) {
-        try{
-            postService.finishConcept(id, postRequest);
-            return ResponseEntity.ok("Post with id " + id + " finished successfully");
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + ex.getMessage());
-        }
+    @ResponseStatus(HttpStatus.OK)
+    public void finishConcept(@PathVariable Long id, @RequestBody PostRequest postRequest) {
+        postService.finishConcept(id, postRequest);
     }
 }

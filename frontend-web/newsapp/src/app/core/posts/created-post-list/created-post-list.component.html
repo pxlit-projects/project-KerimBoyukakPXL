@@ -6,6 +6,7 @@
     <div class="grid grid-cols-1 gap-6">
       @for(post of postList; track post.id){
         <app-post-item [post]="post" ></app-post-item>
+        <a [routerLink]="['/edit-post', post.id]" class="flex w-full justify-center rounded-md bg-zinc-800 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-zinc-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-700">Edit post</a>
          }
     </div>
   </div>

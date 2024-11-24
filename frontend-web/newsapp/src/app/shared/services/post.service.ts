@@ -17,6 +17,9 @@ export class PostService {
   getConceptPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(this.api+'/concept');
   }
+  getPublishedPosts(): Observable<Post[]> {
+    return this.http.get<Post[]>(this.api+'/published');
+  }
   getPost(id:number) : Observable<Post> {
     return this.http.get<Post>(this.api+'/'+id);
   }
@@ -26,10 +29,10 @@ export class PostService {
   saveConcept(post: any):Observable<Post> {
     return this.http.post<Post>(this.api+'/concept', post);
   }
-  updateContent(id:number, content:string):Observable<Post>{
-    return this.http.put<Post>(this.api+'/'+id, content);
+  updatePost(id:number, post: any):Observable<Post>{
+    return this.http.put<Post>(this.api+'/'+id, post);
   }
-  updateConcept(id:number, post:Post):Observable<Post>{
+  updateConcept(id:number, post:any):Observable<Post>{
     return this.http.put<Post>(this.api+'/concept/'+id, post);
   }
 }

@@ -6,6 +6,8 @@
     </div>
     @if(selectedOption === 'created'){
       <app-created-post-list></app-created-post-list>
+      <a [routerLink]="['/add-post']" class="my-2 flex w-full justify-center rounded-md bg-zinc-800 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-zinc-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-700">Add post</a>
+
     }
     @else {
       <app-concept-post-list></app-concept-post-list>
@@ -13,7 +15,6 @@
 
   </div>
   <div>
-    <a [routerLink]="['/add-post']" class="my-2 flex w-full justify-center rounded-md bg-zinc-800 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-zinc-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-700">Add post</a>
     <button (click)="logout()" class="my-2 flex w-full justify-center rounded-md bg-zinc-800 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-zinc-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-700">Logout</button>
   </div>
 </div>

@@ -1,7 +1,6 @@
 package be.pxl.microservices.domain.dto.request;
 
 import be.pxl.microservices.domain.Post;
-import be.pxl.microservices.domain.State;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
