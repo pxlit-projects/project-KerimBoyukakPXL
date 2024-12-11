@@ -74,4 +74,10 @@ public class PostController {
     public void finishConcept(@PathVariable Long id, @RequestBody PostRequest postRequest) {
         postService.finishConcept(id, postRequest);
     }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deletePost(@PathVariable Long id) {
+        postService.deletePost(id);
+    }
 }
