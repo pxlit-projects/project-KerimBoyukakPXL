@@ -7,7 +7,10 @@ export class AuthService {
   private username: string | null = null;
   private role : 'editor' | 'user' | null = null;
 
-  constructor() {this.loadUser()}
+  constructor() {
+    this.loadUser()
+  }
+
   setUser(username: string, role: 'editor' | 'user') {
     this.username = username;
     this.role = role;

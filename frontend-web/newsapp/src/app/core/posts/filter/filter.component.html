@@ -1,0 +1,26 @@
+<div class="flex min-h-full flex-col justify-center py-5">
+  <div class="mt-5 sm:mx-auto sm:w-full">
+    <form #filterForm="ngForm" class="space-y-4" (ngSubmit)="onSubmit(filterForm)">
+      <div class="flex flex-wrap -mx-2 items-end">
+        <div class="w-full sm:w-1/3 px-2">
+          <div class="mt-2">
+            <input type="text" name="content" [(ngModel)]="filter.content" placeholder="content" class="bg-zinc-100 block w-full rounded-md border border-gray-300 py-2 px-3 text-zinc-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 sm:text-sm">
+          </div>
+        </div>
+        <div class="w-full sm:w-1/3 px-2">
+          <div class="mt-2">
+            <input type="text" name="author" [(ngModel)]="filter.author" placeholder="author" class="bg-zinc-100 block w-full rounded-md border border-gray-300 py-2 px-3 text-zinc-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 sm:text-sm">
+          </div>
+        </div>
+        <div class="w-full sm:w-1/3 px-2">
+          <div class="mt-2">
+            <input type="date" name="dateCreated" [(ngModel)]="filter.dateCreated" placeholder="Choose a date" class="bg-zinc-100 block w-full rounded-md border border-gray-300 py-2 px-3 text-zinc-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 sm:text-sm">
+          </div>
+        </div>
+        <div class="w-full sm:w-1/3 px-2">
+          <button type="submit" class="mt-6 w-full justify-center rounded-md bg-zinc-800 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-zinc-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-700">Search</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

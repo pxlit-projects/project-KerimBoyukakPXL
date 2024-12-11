@@ -3,6 +3,8 @@ import {PostService} from "../../../shared/services/post.service";
 import {Post} from "../../../shared/models/post.model";
 import {PostItemComponent} from "../post-item/post-item.component";
 import {RouterLink} from "@angular/router";
+import {AuthService} from "../../../shared/services/auth.service";
+import {Review} from "../../../shared/models/review.model";
 
 @Component({
   selector: 'app-created-post-list',
@@ -16,9 +18,13 @@ import {RouterLink} from "@angular/router";
 })
 export class CreatedPostListComponent implements OnInit {
   postService: PostService = inject(PostService);
-  postList!: Post[]
+  authService: AuthService = inject(AuthService);
+  postList!: Post[];
+  username: string | null = null;
+
 
   ngOnInit(): void {
+    this.username = this.authService.getUser();
     this.fetchData();
   }
 
@@ -29,5 +35,4 @@ export class CreatedPostListComponent implements OnInit {
       }
     });
   }
-
 }

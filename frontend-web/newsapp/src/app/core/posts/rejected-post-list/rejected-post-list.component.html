@@ -1,0 +1,19 @@
+<h2 class="mt-10 text-center text-2xl font-bold tracking-tight text-zinc-800">Rejected posts</h2>
+
+<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-3xl">
+    <div class="grid grid-cols-1 gap-6">
+      @for(post of postList; track post.id){
+        <div class="my-7">
+          <app-post-item [post]="post"></app-post-item>
+          @if(post.id !== undefined && reviews[post.id]){
+            <div class="mt-5">
+              <p class="text-sm text-red-800">{{reviews[post.id].rejectMessage  }}</p>
+              <p class="mt-1 text-sm text-red-800">Reviewer : {{ reviews[post.id].reviewer }}</p>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>

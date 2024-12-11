@@ -1,0 +1,56 @@
+<div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-3xl">
+
+    <h2 class="mt-10 text-center text-2xl font-bold tracking-tight text-zinc-800">User comments</h2>
+
+    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+      <div class="sm:mx-auto sm:w-full sm:max-w-3xl">
+        <app-post-item [post]="post"></app-post-item>
+        <div class="mt-8 grid grid-cols-1 gap-6">
+          @if(comments.length === 0){
+            <p class="text-center text-zinc-800">No comments yet</p>
+          } @else {
+            <p class="text-center text-zinc-800">Comments:</p>
+
+          }
+          @for(comment of comments; track comment.id){
+            <div class="border-b  border-gray-200 pb-4">
+              <p class="text-sm text-zinc-600">commenter : {{ comment.commenter }}</p>
+              {{ comment.content }}
+              @if(comment.commenter === commenter){
+
+                  <div class="flex space-x-2">
+                  <button (click)="editComment(comment)">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="black">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20h9" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.5 3.5a2.121 2.121 0 113 3L7 19.5 3 21l1.5-4L16.5 3.5z" />
+                    </svg>
+                  </button>
+                  <button (click)="deleteComment(comment.id)" >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="red">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              }
+            </div>
+
+
+          }
+          @if(editingCommentId === null){
+            <textarea [(ngModel)]="newCommentContent" name="comment" class="w-full bg-zinc-100 p-2 border rounded-lg" placeholder="Add a comment..."></textarea>
+            <button (click)="addComment()" class="mt-2 px-4 py-2 bg-zinc-800 text-white rounded-lg">Add</button>
+          }
+          @if(editingCommentId !== null){
+            <textarea [(ngModel)]="editCommentContent" name="editComment" class="w-full bg-zinc-100 p-2 border rounded-lg" placeholder="Edit your comment..."></textarea>
+            <button (click)="updateComment()" class="mt-2 px-4 py-2 bg-zinc-800 text-white rounded-lg">Edit</button>
+          }
+          <button (click)="goBack()" class=" px-4 py-2 bg-zinc-800 text-white rounded-lg">Back</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

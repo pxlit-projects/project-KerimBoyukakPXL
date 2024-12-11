@@ -1,12 +1,22 @@
 <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-3xl">
     <div class="flex justify-center space-x-4">
-      <span (click)="selectOption('created')" [class.underline]="selectedOption === 'created'" class="cursor-pointer text-zinc-800">Created Posts</span>
+      <span (click)="selectOption('published')" [class.underline]="selectedOption === 'published'" class="cursor-pointer text-zinc-800">Published</span>
+      <span (click)="selectOption('created')" [class.underline]="selectedOption === 'created'" class="cursor-pointer text-zinc-800">Pending</span>
       <span (click)="selectOption('drafts')" [class.underline]="selectedOption === 'drafts'" class="cursor-pointer text-zinc-800">Drafts</span>
+      <span (click)="selectOption('rejected')" [class.underline]="selectedOption === 'rejected'" class="cursor-pointer text-zinc-800">Rejected</span>
+
     </div>
     @if(selectedOption === 'created'){
       <app-created-post-list></app-created-post-list>
       <a [routerLink]="['/add-post']" class="my-2 flex w-full justify-center rounded-md bg-zinc-800 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-zinc-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-700">Add post</a>
+
+    } @else if (selectedOption === 'published'){
+      <app-published-post-list></app-published-post-list>
+
+    }
+     @else if (selectedOption === 'rejected'){
+    <app-rejected-post-list></app-rejected-post-list>
 
     }
     @else {

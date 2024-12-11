@@ -9,9 +9,11 @@ public interface IPostService {
     List<PostResponse> getAllCreatedPosts();
     List<PostResponse> getAllConceptPosts();
     List<PostResponse> getAllPublishedPosts();
+    List<PostResponse> getAllRejectedPosts();
     PostResponse getPostById(Long id);
     void createPost(PostRequest postRequest);
     void saveConcept(PostRequest postRequest);
     void updatePost(Long id, PostRequest postRequest);
     void finishConcept(Long id, PostRequest postRequest);
+    void deletePost(Long id);
 }

@@ -37,10 +37,12 @@ export class AddPostComponent {
       };
       if (this.action === 'add') {
         this.postService.createPost(newPost).subscribe(post => {
+          this.postForm.reset();
           this.router.navigate(['/dashboard']);
         });
       } else if (this.action === 'save') {
         this.postService.saveConcept(newPost).subscribe(post => {
+          this.postForm.reset();
           this.router.navigate(['/dashboard']);
         });
       }

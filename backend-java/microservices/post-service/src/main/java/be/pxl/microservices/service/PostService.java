@@ -6,6 +6,8 @@ import be.pxl.microservices.domain.dto.request.PostRequest;
 import be.pxl.microservices.domain.dto.response.PostResponse;
 import be.pxl.microservices.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,19 +17,26 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostService implements IPostService {
     private final PostRepository postRepository;
+    private final RabbitTemplate rabbitTemplate;
 
-    public List<PostResponse> getAllCreatedPosts() {
-        return postRepository.findByState(State.CREATED).stream()
-                .map(PostResponse::new)
-                .toList();
-    }
+
     public List<PostResponse> getAllConceptPosts() {
         return postRepository.findByState(State.CONCEPT).stream()
                 .map(PostResponse::new)
                 .toList();
     }
+    public List<PostResponse> getAllCreatedPosts() {
+        return postRepository.findByState(State.PENDING).stream()
+                .map(PostResponse::new)
+                .toList();
+    }
     public List<PostResponse> getAllPublishedPosts() {
         return postRepository.findByState(State.PUBLISHED).stream()
+                .map(PostResponse::new)
+                .toList();
+    }
+    public List<PostResponse> getAllRejectedPosts() {
+        return postRepository.findByState(State.REJECTED).stream()
                 .map(PostResponse::new)
                 .toList();
     }
@@ -39,12 +48,6 @@ public class PostService implements IPostService {
     }
 
     @Override
-    public void createPost(PostRequest postRequest) {
-        Post post = postRequest.toPost();
-        post.setState(State.CREATED);
-        postRepository.save(post);
-    }
-    @Override
     public void saveConcept(PostRequest postRequest) {
         Post post = postRequest.toPost();
         post.setState(State.CONCEPT);
@@ -52,11 +55,18 @@ public class PostService implements IPostService {
     }
 
     @Override
+    public void createPost(PostRequest postRequest) {
+        Post post = postRequest.toPost();
+        post.setState(State.PENDING);
+        postRepository.save(post);
+    }
+
+    @Override
     public void updatePost(Long id, PostRequest postRequest) {    // These are the posts waiting to be published (state CREATED)
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Post with id " + id + " not found"));
-        if (post.getState() != State.CREATED) {
-            throw new IllegalArgumentException("Only posts with state CREATED can be updated");
+        if (post.getState() != State.PENDING) {
+            throw new IllegalArgumentException("Only posts with state PENDING can be updated");
         }
         post.setContent(postRequest.getContent());
         post.setTitle(postRequest.getTitle());
@@ -73,7 +83,41 @@ public class PostService implements IPostService {
         post.setTitle(postRequest.getTitle());
         post.setContent(postRequest.getContent());
         post.setDateCreated(LocalDateTime.now());   // Update the dateCreated to the current date
-        post.setState(State.CREATED);               // Whenever we continue working on a concept, we change the state to CREATED when we are done
+        post.setState(State.PENDING);               // Whenever we finish a temporary concept, we change the state to PENDING when we are done
+        postRepository.save(post);
+    }
+    @Override
+    public void deletePost(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Post with id " + id + " not found"));
+        postRepository.delete(post);
+    }
+
+    @RabbitListener(queues = "ApproveQueue")   // listens to the putReview queue
+    public void approvePost(Long id){
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Post with id " + id + " not found"));
+
+        if (post.getState() != State.PENDING) {
+            throw new IllegalArgumentException("Only posts with state PENDING can be reviewed");
+        }
+
+        post.setState(State.PUBLISHED);
+
+        postRepository.save(post);
+    }
+
+    @RabbitListener(queues = "RejectQueue")   // listens to the putReview queue
+    public void rejectPost(Long id){
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Post with id " + id + " not found"));
+
+        if (post.getState() != State.PENDING) {
+            throw new IllegalArgumentException("Only posts with state PENDING can be reviewed");
+        }
+
+        post.setState(State.REJECTED);
+
         postRepository.save(post);
     }
 }

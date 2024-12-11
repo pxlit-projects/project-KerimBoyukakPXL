@@ -48,6 +48,14 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + ex.getMessage());
         }
     }
+    @GetMapping("/rejected")
+    public ResponseEntity<?> getRejectedPosts() {
+        try{
+            return ResponseEntity.ok(postService.getAllRejectedPosts());
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + ex.getMessage());
+        }
+    }
     @GetMapping("/{id}")
     public ResponseEntity<?> getPostById(@PathVariable Long id) {
         try{

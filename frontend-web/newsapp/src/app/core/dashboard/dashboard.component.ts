@@ -3,6 +3,8 @@ import {Router, RouterLink} from "@angular/router";
 import {AuthService} from "../../shared/services/auth.service";
 import {CreatedPostListComponent} from "../posts/created-post-list/created-post-list.component";
 import {ConceptPostListComponent} from "../posts/concept-post-list/concept-post-list.component";
+import {PublishedPostListComponent} from "../posts/published-post-list/published-post-list.component";
+import {RejectedPostListComponent} from "../posts/rejected-post-list/rejected-post-list.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -11,6 +13,8 @@ import {ConceptPostListComponent} from "../posts/concept-post-list/concept-post-
     RouterLink,
     CreatedPostListComponent,
     ConceptPostListComponent,
+    PublishedPostListComponent,
+    RejectedPostListComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'

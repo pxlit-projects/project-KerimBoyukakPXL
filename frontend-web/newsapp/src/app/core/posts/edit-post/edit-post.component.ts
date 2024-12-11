@@ -3,7 +3,7 @@ import {Post} from "../../../shared/models/post.model";
 import {PostService} from "../../../shared/services/post.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Observable} from "rxjs";
-import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-edit-post',
@@ -28,8 +28,8 @@ export class EditPostComponent implements OnInit {
     this.editForm = this.fb.group({
       author: [{value: '', disabled: true}],
       createdAt: [{value: '', disabled: true}],
-      title: [''],
-      content: ['']
+      title: ['',Validators.required],
+      content: ['',Validators.required]
     });
 
     this.post = this.postService.getPost(this.id);
