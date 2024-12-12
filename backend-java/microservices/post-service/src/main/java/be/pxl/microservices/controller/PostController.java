@@ -69,6 +69,13 @@ public class PostController {
     public void updatePost(@PathVariable Long id, @RequestBody PostRequest postRequest) {
         postService.updatePost(id, postRequest);
     }
+
+    @PutMapping("/rejected/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateRejectedPost(@PathVariable Long id, @RequestBody PostRequest postRequest) {
+        postService.updateRejectedPost(id, postRequest);
+    }
+
     @PutMapping("/concept/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void finishConcept(@PathVariable Long id, @RequestBody PostRequest postRequest) {

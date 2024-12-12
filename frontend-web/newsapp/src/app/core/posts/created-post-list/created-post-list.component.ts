@@ -4,7 +4,6 @@ import {Post} from "../../../shared/models/post.model";
 import {PostItemComponent} from "../post-item/post-item.component";
 import {RouterLink} from "@angular/router";
 import {AuthService} from "../../../shared/services/auth.service";
-import {Review} from "../../../shared/models/review.model";
 
 @Component({
   selector: 'app-created-post-list',

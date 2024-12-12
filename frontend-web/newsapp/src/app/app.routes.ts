@@ -9,6 +9,7 @@ import {EditPostComponent} from "./core/posts/edit-post/edit-post.component";
 import {confirmLeaveGuard} from "./shared/services/confirm-leave.guard";
 import {PostReviewComponent} from "./core/reviews/post-review/post-review.component";
 import {PostDetailComponent} from "./core/posts/post-detail/post-detail.component";
+import {EditRejectedComponent} from "./core/posts/edit-rejected/edit-rejected.component";
 
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -19,6 +20,7 @@ export const routes: Routes = [
   {path: 'edit-post/:id', component: EditPostComponent, canActivate: [AuthGuard]},
   {path: 'review-post/:id', component: PostReviewComponent, canActivate: [AuthGuard]},
   {path: 'edit-draft/:id', component: EditDraftComponent, canActivate: [AuthGuard]},
+  {path: 'edit-rejected/:id', component: EditRejectedComponent, canActivate: [AuthGuard]},
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: '**', redirectTo: 'login'}
 ];

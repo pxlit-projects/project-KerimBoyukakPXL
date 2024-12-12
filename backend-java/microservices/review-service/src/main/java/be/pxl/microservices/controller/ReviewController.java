@@ -25,7 +25,7 @@ public class ReviewController {
 
     @PostMapping("/approve/{postId}")
     @ResponseStatus(HttpStatus.OK)
-    public void approvePost(@PathVariable Long postId, @RequestBody String reviewer) {
+    public void approvePost(@PathVariable Long postId) {
         reviewService.approvePost(postId);
     }
 

@@ -5,26 +5,28 @@ import {Post} from "../../../shared/models/post.model";
 import {Review} from "../../../shared/models/review.model";
 import {ReviewService} from "../../../shared/services/review.service";
 import {forkJoin, Observable} from "rxjs";
-import {AsyncPipe, DatePipe, NgIf} from "@angular/common";
+import {AuthService} from "../../../shared/services/auth.service";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-rejected-post-list',
   standalone: true,
   imports: [
     PostItemComponent,
-    NgIf,
-    AsyncPipe,
-    DatePipe
+    RouterLink
   ],
   templateUrl: './rejected-post-list.component.html',
   styleUrls: ['./rejected-post-list.component.css']
 })
 export class RejectedPostListComponent implements OnInit {
+  authService: AuthService = inject(AuthService);
   postService: PostService = inject(PostService);
   reviewService: ReviewService = inject(ReviewService);
 
   reviews: { [postId: number]: Review } = {};
   postList!: Post[];
+  user = this.authService.getUser();
+
 
   ngOnInit(): void {
     this.fetchData();

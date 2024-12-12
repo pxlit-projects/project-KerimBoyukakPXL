@@ -39,7 +39,9 @@ export class PostService {
   updateConcept(id:number, post:any):Observable<Post>{
     return this.http.put<Post>(this.api+'/concept/'+id, post);
   }
-
+  updateRejected(id:number, post:any):Observable<Post>{
+    return this.http.put<Post>(this.api+'/rejected/'+id, post);
+  }
   filterPosts(filter: FilterModel) : Observable<Post[]> {
     return this.http.get<Post[]>(this.api + '/published').pipe(
       map((posts: Post[]) => posts.filter(post => this.isPostMatchingFilter(post, filter)))
