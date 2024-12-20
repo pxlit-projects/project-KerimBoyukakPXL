@@ -1,7 +1,6 @@
 package be.pxl.microservices.controller;
 
 import be.pxl.microservices.domain.dto.request.ReviewRequest;
-import be.pxl.microservices.domain.dto.response.ReviewResponse;
 import be.pxl.microservices.service.IReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

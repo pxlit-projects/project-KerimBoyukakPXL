@@ -1,5 +1,7 @@
 package be.pxl.microservices.service;
 
+import be.pxl.microservices.client.NotificationClient;
+import be.pxl.microservices.client.NotificationRequest;
 import be.pxl.microservices.domain.Post;
 import be.pxl.microservices.domain.State;
 import be.pxl.microservices.domain.dto.request.PostRequest;
@@ -20,6 +22,8 @@ import java.util.List;
 public class PostService implements IPostService {
     private final PostRepository postRepository;
     private final RabbitTemplate rabbitTemplate;
+    private final NotificationClient notificationClient;
+
 
     private static final Logger log = LoggerFactory.getLogger(PostService.class);
 
@@ -138,6 +142,13 @@ public class PostService implements IPostService {
         post.setState(State.PUBLISHED);
         postRepository.save(post);
         log.info("Post with id {} approved", id);
+
+        NotificationRequest notificationRequest = new NotificationRequest();
+        notificationRequest.setMessage("Your post has been approved and is now published");
+        notificationRequest.setPostId(id);
+        notificationRequest.setEmail(post.getAuthorEmail());
+        notificationRequest.setSubject("Post approved");
+        notificationClient.sendNotification(notificationRequest);
     }
 
     @RabbitListener(queues = "RejectQueue")
@@ -153,5 +164,12 @@ public class PostService implements IPostService {
         post.setState(State.REJECTED);
         postRepository.save(post);
         log.info("Post with id {} rejected", id);
+
+        NotificationRequest notificationRequest = new NotificationRequest();
+        notificationRequest.setMessage("Your post has been rejected and needs to be updated");
+        notificationRequest.setPostId(id);
+        notificationRequest.setEmail(post.getAuthorEmail());
+        notificationRequest.setSubject("Post approved");
+        notificationClient.sendNotification(notificationRequest);
     }
 }

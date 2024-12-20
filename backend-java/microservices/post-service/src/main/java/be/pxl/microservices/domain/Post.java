@@ -24,9 +24,18 @@ public class Post {
 
     private String author;
 
+    private String authorEmail;
+
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime dateCreated;
 
     @Enumerated(EnumType.STRING)
     private State state;
+
+    @PrePersist
+    public void prePersist() {
+        if (authorEmail == null) {
+            authorEmail = "kerimboyukak@gmail.com";
+        }
+    }
 }
