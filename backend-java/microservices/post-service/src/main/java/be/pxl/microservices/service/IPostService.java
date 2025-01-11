@@ -16,5 +16,4 @@ public interface IPostService {
     void updatePost(Long id, PostRequest postRequest);
     void updateRejectedPost(Long id, PostRequest postRequest);
     void finishConcept(Long id, PostRequest postRequest);
-    void deletePost(Long id);
 }

@@ -70,14 +70,16 @@ export class PostDetailComponent implements OnInit{
   }
 
   updateComment(): void {
-    const updatedComment = { content: this.editCommentContent };
-    this.commentService.updateComment(this.editingCommentId!, updatedComment).subscribe({
-      next: comment => {
-        this.editingCommentId = null;
-        this.editCommentContent = '';
-        this.fetchComments();
-      }
-    });
+    if (this.editingCommentId !== null && this.editingCommentId !== undefined) {
+      const updatedComment = { content: this.editCommentContent };
+      this.commentService.updateComment(this.editingCommentId, updatedComment).subscribe({
+        next: comment => {
+          this.editingCommentId = null;
+          this.editCommentContent = '';
+          this.fetchComments();
+        }
+      });
+    }
   }
 
   deleteComment(id: number | undefined): void {

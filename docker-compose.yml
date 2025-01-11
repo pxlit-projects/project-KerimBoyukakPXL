@@ -1,1 +1,10 @@
-# This file will contain a script in orde to start up the system (all microservices) 
+# This file will contain a script in orde to start up the system (all microservices)
+
+services:
+  front-end:
+    container_name: frontend
+    build:
+      context: ./frontend-web/newsapp
+      dockerfile: Dockerfile
+    ports:
+      - "9000:80"

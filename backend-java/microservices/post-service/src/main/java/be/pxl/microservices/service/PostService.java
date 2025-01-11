@@ -120,14 +120,6 @@ public class PostService implements IPostService {
         postRepository.save(post);
         log.info("Concept with id {} finished", id);
     }
-    @Override
-    public void deletePost(Long id) {
-        log.info("Deleting post with id {}", id);
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Post with id " + id + " not found"));
-        postRepository.delete(post);
-        log.info("Post with id {} deleted", id);
-    }
 
     @RabbitListener(queues = "ApproveQueue")
     public void approvePost(Long id){

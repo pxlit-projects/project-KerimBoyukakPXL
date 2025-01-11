@@ -26,43 +26,23 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<?> getCreatedPosts() {
-        try{
-            return ResponseEntity.ok(postService.getAllCreatedPosts());
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + ex.getMessage());
-        }
+        return ResponseEntity.ok(postService.getAllCreatedPosts());
     }
     @GetMapping("/concept")
     public ResponseEntity<?> getConceptPosts() {
-        try{
-            return ResponseEntity.ok(postService.getAllConceptPosts());
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + ex.getMessage());
-        }
+        return ResponseEntity.ok(postService.getAllConceptPosts());
     }
     @GetMapping("/published")
     public ResponseEntity<?> getPublishedPosts() {
-        try{
-            return ResponseEntity.ok(postService.getAllPublishedPosts());
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + ex.getMessage());
-        }
+        return ResponseEntity.ok(postService.getAllPublishedPosts());
     }
     @GetMapping("/rejected")
     public ResponseEntity<?> getRejectedPosts() {
-        try{
-            return ResponseEntity.ok(postService.getAllRejectedPosts());
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + ex.getMessage());
-        }
+        return ResponseEntity.ok(postService.getAllRejectedPosts());
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> getPostById(@PathVariable Long id) {
-        try{
-            return ResponseEntity.ok(postService.getPostById(id));
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + ex.getMessage());
-        }
+        return ResponseEntity.ok(postService.getPostById(id));
     }
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -80,11 +60,5 @@ public class PostController {
     @ResponseStatus(HttpStatus.OK)
     public void finishConcept(@PathVariable Long id, @RequestBody PostRequest postRequest) {
         postService.finishConcept(id, postRequest);
-    }
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deletePost(@PathVariable Long id) {
-        postService.deletePost(id);
     }
 }

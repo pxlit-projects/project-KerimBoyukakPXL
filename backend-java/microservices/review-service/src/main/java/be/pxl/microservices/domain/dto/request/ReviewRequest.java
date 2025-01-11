@@ -1,11 +1,15 @@
 package be.pxl.microservices.domain.dto.request;
 
 import be.pxl.microservices.domain.Review;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ReviewRequest {
     private Long postId;
     private String reviewer;

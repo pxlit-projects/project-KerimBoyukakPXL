@@ -15,11 +15,7 @@ public class ReviewController {
 
     @GetMapping("/{postId}")
     public ResponseEntity<?> getReviewByPostId(@PathVariable Long postId) {
-        try{
-            return ResponseEntity.ok(reviewService.getReviewByPostId(postId));
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + ex.getMessage());
-        }
+        return ResponseEntity.ok(reviewService.getReviewByPostId(postId));
     }
 
     @PostMapping("/approve/{postId}")

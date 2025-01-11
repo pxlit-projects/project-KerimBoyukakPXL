@@ -15,11 +15,7 @@ public class CommentController {
 
     @GetMapping("/{postId}")
     public ResponseEntity<?> getCommentsByPostId(@PathVariable Long postId) {
-        try {
-            return ResponseEntity.ok(commentService.getCommentsByPostId(postId));
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + ex.getMessage());
-        }
+        return ResponseEntity.ok(commentService.getCommentsByPostId(postId));
     }
 
     @PostMapping

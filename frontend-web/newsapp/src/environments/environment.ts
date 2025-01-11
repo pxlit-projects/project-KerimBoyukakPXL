@@ -1,4 +1,4 @@
 export const environment = {
-  production: true,
-  apiUrl: 'fakeurl.com'
+  apiUrl: 'https://prod.pxl.be/api',
+  production: true
 };
