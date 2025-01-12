@@ -14,51 +14,89 @@ public class PostController {
     private final IPostService postService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createPost(@RequestBody PostRequest postRequest) {
+    public ResponseEntity<?> createPost(@RequestHeader("role") String role,
+                                        @RequestBody PostRequest postRequest) {
+        if (!role.equals("editor")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Access Denied");
+        }
         postService.createPost(postRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
     @PostMapping("/concept")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void saveConcept(@RequestBody PostRequest postRequest) {
+    public ResponseEntity<?> saveConcept(@RequestHeader("role") String role,
+                                         @RequestBody PostRequest postRequest) {
+        if (!role.equals("editor")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Access Denied");
+        }
         postService.saveConcept(postRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
-    public ResponseEntity<?> getCreatedPosts() {
+    public ResponseEntity<?> getCreatedPosts(@RequestHeader("role") String role) {
+        if (!role.equals("editor")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Access Denied");
+        }
         return ResponseEntity.ok(postService.getAllCreatedPosts());
     }
+
     @GetMapping("/concept")
-    public ResponseEntity<?> getConceptPosts() {
+    public ResponseEntity<?> getConceptPosts(@RequestHeader("role") String role) {
+        if (!role.equals("editor")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Access Denied");
+        }
         return ResponseEntity.ok(postService.getAllConceptPosts());
     }
+
     @GetMapping("/published")
-    public ResponseEntity<?> getPublishedPosts() {
+    public ResponseEntity<?> getPublishedPosts(@RequestHeader("role") String role) {
+        if (!role.equals("editor") && !role.equals("user")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Access Denied");
+        }
         return ResponseEntity.ok(postService.getAllPublishedPosts());
     }
+
     @GetMapping("/rejected")
-    public ResponseEntity<?> getRejectedPosts() {
+    public ResponseEntity<?> getRejectedPosts(@RequestHeader("role") String role) {
+        if (!role.equals("editor")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Access Denied");
+        }
         return ResponseEntity.ok(postService.getAllRejectedPosts());
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPostById(@PathVariable Long id) {
+    public ResponseEntity<?> getPostById(@RequestHeader("role") String role, @PathVariable Long id) {
+        if (!role.equals("editor") && !role.equals("user")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Access Denied");
+        }
         return ResponseEntity.ok(postService.getPostById(id));
     }
+
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void updatePost(@PathVariable Long id, @RequestBody PostRequest postRequest) {
+    public ResponseEntity<?> updatePost(@RequestHeader("role") String role, @PathVariable Long id, @RequestBody PostRequest postRequest) {
+        if (!role.equals("editor")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Access Denied");
+        }
         postService.updatePost(id, postRequest);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PutMapping("/rejected/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void updateRejectedPost(@PathVariable Long id, @RequestBody PostRequest postRequest) {
+    public ResponseEntity<?> updateRejectedPost(@RequestHeader("role") String role, @PathVariable Long id, @RequestBody PostRequest postRequest) {
+        if (!role.equals("editor")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Access Denied");
+        }
         postService.updateRejectedPost(id, postRequest);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PutMapping("/concept/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void finishConcept(@PathVariable Long id, @RequestBody PostRequest postRequest) {
+    public ResponseEntity<?> finishConcept(@RequestHeader("role") String role, @PathVariable Long id, @RequestBody PostRequest postRequest) {
+        if (!role.equals("editor")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Access Denied");
+        }
         postService.finishConcept(id, postRequest);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

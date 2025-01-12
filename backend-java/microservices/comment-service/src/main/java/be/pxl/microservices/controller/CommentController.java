@@ -14,25 +14,37 @@ public class CommentController {
     private final ICommentService commentService;
 
     @GetMapping("/{postId}")
-    public ResponseEntity<?> getCommentsByPostId(@PathVariable Long postId) {
+    public ResponseEntity<?> getCommentsByPostId(@RequestHeader("role") String role, @PathVariable Long postId) {
+        if (!role.equals("user")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Access Denied");
+        }
         return ResponseEntity.ok(commentService.getCommentsByPostId(postId));
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createComment(@RequestBody CommentRequest commentRequest) {
+    public ResponseEntity<?> createComment(@RequestHeader("role") String role, @RequestBody CommentRequest commentRequest) {
+        if (!role.equals("user")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Access Denied");
+        }
         commentService.createComment(commentRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void updateComment(@PathVariable Long id, @RequestBody CommentRequest commentRequest) {
+    public ResponseEntity<?> updateComment(@RequestHeader("role") String role, @PathVariable Long id, @RequestBody CommentRequest commentRequest) {
+        if (!role.equals("user")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Access Denied");
+        }
         commentService.updateComment(id, commentRequest);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteComment(@PathVariable Long id) {
+    public ResponseEntity<?> deleteComment(@RequestHeader("role") String role, @PathVariable Long id) {
+        if (!role.equals("user")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Access Denied");
+        }
         commentService.deleteComment(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

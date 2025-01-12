@@ -14,19 +14,28 @@ public class ReviewController {
     private final IReviewService reviewService;
 
     @GetMapping("/{postId}")
-    public ResponseEntity<?> getReviewByPostId(@PathVariable Long postId) {
+    public ResponseEntity<?> getReviewByPostId(@RequestHeader("role") String role, @PathVariable Long postId) {
+        if (!role.equals("editor")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Access Denied");
+        }
         return ResponseEntity.ok(reviewService.getReviewByPostId(postId));
     }
 
     @PostMapping("/approve/{postId}")
-    @ResponseStatus(HttpStatus.OK)
-    public void approvePost(@PathVariable Long postId) {
+    public ResponseEntity<?> approvePost(@RequestHeader("role") String role, @PathVariable Long postId) {
+        if (!role.equals("editor")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Access Denied");
+        }
         reviewService.approvePost(postId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PostMapping("/reject/{postId}")
-    @ResponseStatus(HttpStatus.OK)
-    public void rejectPost(@PathVariable Long postId, @RequestBody ReviewRequest request) {
+    public ResponseEntity<?> rejectPost(@RequestHeader("role") String role, @PathVariable Long postId, @RequestBody ReviewRequest request) {
+        if (!role.equals("editor")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Access Denied");
+        }
         reviewService.rejectPost(postId, request);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

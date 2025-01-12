@@ -51,7 +51,7 @@ class ReviewControllerTest {
     }
 
     @Test
-    void getReviewByPostId() throws Exception {
+    void getReviewByPostId_withEditorRole_shouldReturnOk() throws Exception {
         Review review = Review.builder()
                 .postId(1L)
                 .reviewer("Reviewer")
@@ -59,23 +59,50 @@ class ReviewControllerTest {
                 .build();
         reviewRepository.save(review);
 
-        mockMvc.perform(get("/api/reviews/1"))
+        mockMvc.perform(get("/api/reviews/1")
+                        .header("role", "editor"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.postId").value(1));
     }
 
     @Test
-    void approvePost() throws Exception {
-        mockMvc.perform(post("/api/reviews/approve/1"))
+    void getReviewByPostId_withNonEditorRole_shouldReturnUnauthorized() throws Exception {
+        mockMvc.perform(get("/api/reviews/1")
+                        .header("role", "user"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void approvePost_withEditorRole_shouldReturnOk() throws Exception {
+        mockMvc.perform(post("/api/reviews/approve/1")
+                        .header("role", "editor"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void rejectPost() throws Exception {
+    void approvePost_withNonEditorRole_shouldReturnUnauthorized() throws Exception {
+        mockMvc.perform(post("/api/reviews/approve/1")
+                        .header("role", "user"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void rejectPost_withEditorRole_shouldReturnOk() throws Exception {
         ReviewRequest reviewRequest = new ReviewRequest(1L, "Reviewer", "Reason for rejection");
         mockMvc.perform(post("/api/reviews/reject/1")
+                        .header("role", "editor")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(reviewRequest)))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void rejectPost_withNonEditorRole_shouldReturnUnauthorized() throws Exception {
+        ReviewRequest reviewRequest = new ReviewRequest(1L, "Reviewer", "Reason for rejection");
+        mockMvc.perform(post("/api/reviews/reject/1")
+                        .header("role", "user")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(reviewRequest)))
+                .andExpect(status().isUnauthorized());
     }
 }

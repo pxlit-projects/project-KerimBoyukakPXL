@@ -18,7 +18,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -50,9 +49,8 @@ class CommentControllerTest {
         commentRepository.deleteAll();
     }
 
-
     @Test
-    void getCommentsByPostId() throws Exception {
+    void getCommentsByPostId_withUserRole_shouldReturnOk() throws Exception {
         Comment comment = Comment.builder()
                 .postId(1L)
                 .content("This is a comment")
@@ -60,22 +58,41 @@ class CommentControllerTest {
                 .build();
         commentRepository.save(comment);
 
-        mockMvc.perform(get("/api/comments/1"))
+        mockMvc.perform(get("/api/comments/1")
+                        .header("role", "user"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].content").value("This is a comment"));
     }
 
     @Test
-    void createComment() throws Exception {
+    void getCommentsByPostId_withNonUserRole_shouldReturnUnauthorized() throws Exception {
+        mockMvc.perform(get("/api/comments/1")
+                        .header("role", "guest"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void createComment_withUserRole_shouldReturnCreated() throws Exception {
         CommentRequest commentRequest = new CommentRequest(1L, "This is a comment", "Author");
         mockMvc.perform(post("/api/comments")
+                        .header("role", "user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(commentRequest)))
                 .andExpect(status().isCreated());
     }
 
     @Test
-    void updateComment() throws Exception {
+    void createComment_withNonUserRole_shouldReturnUnauthorized() throws Exception {
+        CommentRequest commentRequest = new CommentRequest(1L, "This is a comment", "Author");
+        mockMvc.perform(post("/api/comments")
+                        .header("role", "guest")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(commentRequest)))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void updateComment_withUserRole_shouldReturnOk() throws Exception {
         Comment comment = Comment.builder()
                 .postId(1L)
                 .content("This is a comment")
@@ -85,17 +102,19 @@ class CommentControllerTest {
 
         CommentRequest commentRequest = new CommentRequest(1L, "Author", "Updated comment");
         mockMvc.perform(put("/api/comments/" + comment.getId())
+                        .header("role", "user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(commentRequest)))
                 .andExpect(status().isOk());
 
-        mockMvc.perform(get("/api/comments/1"))
+        mockMvc.perform(get("/api/comments/1")
+                        .header("role", "user"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].content").value("Updated comment"));
     }
 
     @Test
-    void deleteComment() throws Exception {
+    void updateComment_withNonUserRole_shouldReturnUnauthorized() throws Exception {
         Comment comment = Comment.builder()
                 .postId(1L)
                 .content("This is a comment")
@@ -103,11 +122,44 @@ class CommentControllerTest {
                 .build();
         comment = commentRepository.save(comment);
 
-        mockMvc.perform(delete("/api/comments/" + comment.getId()))
+        CommentRequest commentRequest = new CommentRequest(1L, "Author", "Updated comment");
+        mockMvc.perform(put("/api/comments/" + comment.getId())
+                        .header("role", "guest")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(commentRequest)))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void deleteComment_withUserRole_shouldReturnOk() throws Exception {
+        Comment comment = Comment.builder()
+                .postId(1L)
+                .content("This is a comment")
+                .commenter("Author")
+                .build();
+        comment = commentRepository.save(comment);
+
+        mockMvc.perform(delete("/api/comments/" + comment.getId())
+                        .header("role", "user"))
                 .andExpect(status().isOk());
 
-        mockMvc.perform(get("/api/comments/1"))
+        mockMvc.perform(get("/api/comments/1")
+                        .header("role", "user"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isEmpty());
+    }
+
+    @Test
+    void deleteComment_withNonUserRole_shouldReturnUnauthorized() throws Exception {
+        Comment comment = Comment.builder()
+                .postId(1L)
+                .content("This is a comment")
+                .commenter("Author")
+                .build();
+        comment = commentRepository.save(comment);
+
+        mockMvc.perform(delete("/api/comments/" + comment.getId())
+                        .header("role", "guest"))
+                .andExpect(status().isUnauthorized());
     }
 }
