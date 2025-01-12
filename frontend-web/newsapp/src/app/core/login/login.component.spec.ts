@@ -1,9 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './login.component';
-import { of } from 'rxjs';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -16,7 +15,7 @@ describe('LoginComponent', () => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, LoginComponent],
+      imports: [FormsModule, LoginComponent],
       providers: [
         { provide: AuthService, useValue: authServiceSpy },
         { provide: Router, useValue: routerSpy }
@@ -35,15 +34,15 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should not call authService.setUser if form is invalid', () => {
-    component.loginForm.controls['username'].setValue('');
+  it('should not call authService.setUser if username is empty', () => {
+    component.username = '';
     component.onSubmit();
     expect(authService.setUser).not.toHaveBeenCalled();
   });
 
   it('should call authService.setUser and navigate to dashboard if role is editor', () => {
-    component.loginForm.controls['username'].setValue('testUser');
-    component.loginForm.controls['role'].setValue('editor');
+    component.username = 'testUser';
+    component.role = 'editor';
     authService.getRole.and.returnValue('editor');
 
     component.onSubmit();
@@ -53,8 +52,8 @@ describe('LoginComponent', () => {
   });
 
   it('should call authService.setUser and navigate to user-dashboard if role is user', () => {
-    component.loginForm.controls['username'].setValue('testUser');
-    component.loginForm.controls['role'].setValue('user');
+    component.username = 'testUser';
+    component.role = 'user';
     authService.getRole.and.returnValue('user');
 
     component.onSubmit();

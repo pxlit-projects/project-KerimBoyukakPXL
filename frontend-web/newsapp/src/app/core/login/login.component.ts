@@ -17,21 +17,15 @@ export class LoginComponent {
   router: Router = inject(Router);
   authService: AuthService = inject(AuthService);
 
-  fb: FormBuilder = inject(FormBuilder);
-
-  loginForm: FormGroup = this.fb.group({
-    username: ['', Validators.required],
-    role: ['user']
-  });
+  username: string = '';
+  role: 'user' | 'editor' = 'user';
 
   onSubmit() {
-    if (this.loginForm.valid) {
-      const {username, role} = this.loginForm.value;
-      this.authService.setUser(username, role);
+    if (this.username) {
+      this.authService.setUser(this.username, this.role);
       if (this.authService.getRole() === 'editor') {
         this.router.navigate(['/dashboard']);
-      } else if
-      (this.authService.getRole() === 'user') {
+      } else if (this.authService.getRole() === 'user') {
         this.router.navigate(['/user-dashboard']);
       }
     }
