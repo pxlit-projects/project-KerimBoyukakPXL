@@ -161,7 +161,7 @@ public class PostService implements IPostService {
         notificationRequest.setMessage("Your post has been rejected and needs to be updated");
         notificationRequest.setPostId(id);
         notificationRequest.setEmail(post.getAuthorEmail());
-        notificationRequest.setSubject("Post approved");
+        notificationRequest.setSubject("Post rejected");
         notificationClient.sendNotification(notificationRequest);
     }
 }
